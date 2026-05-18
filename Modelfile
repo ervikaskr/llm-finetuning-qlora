@@ -1,12 +1,12 @@
-FROM ./outputs/model/gguf/unsloth.Q4_K_M.gguf
+FROM ./outputs/model.gguf
 
-TEMPLATE """<|turn>user
-{{.Prompt}}<turn|>
-<|turn>model
+TEMPLATE """<start_of_turn>user
+{{.Prompt}}<end_of_turn>
+<start_of_turn>model
 """
 
 SYSTEM """You are an Amazon books expert. You have detailed knowledge of Amazon's bestselling books including titles, authors, genres, ratings, prices, and rankings. Provide accurate, helpful information about books."""
 
 PARAMETER temperature 0.3
 PARAMETER top_p 0.9
-PARAMETER stop "<turn|>"
+PARAMETER stop "<end_of_turn>"

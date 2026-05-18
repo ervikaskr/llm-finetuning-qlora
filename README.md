@@ -56,7 +56,17 @@ python scripts/train.py --max_steps 100
 
 ### 4. Deploy & Test
 ```bash
+# Fuse adapter into base model + export GGUF
+mlx_lm.fuse \
+  --model mlx-community/gemma-2-2b-it-4bit \
+  --adapter-path ./outputs/adapter \
+  --export-gguf \
+  --gguf-path ./outputs/model.gguf
+
+# Load in Ollama
 ollama create amazon-books -f Modelfile
+
+# Test it!
 ollama run amazon-books "List bestseller books of Amazon"
 ```
 
@@ -120,7 +130,9 @@ pip install -r requirements.txt
 python scripts/download_data.py
 python scripts/prepare_data.py
 python scripts/train.py --iters 100
-python scripts/evaluate.py --compare --query "List bestseller books of Amazon"
+mlx_lm.fuse --model mlx-community/gemma-2-2b-it-4bit --adapter-path ./outputs/adapter --export-gguf --gguf-path ./outputs/model.gguf
+ollama create amazon-books -f Modelfile
+ollama run amazon-books "List bestseller books of Amazon"
 ```
 
 ## 📝 License
