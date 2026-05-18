@@ -29,8 +29,8 @@ Fine-tune Gemma 4 (or any open LLM) to answer questions about Amazon's top 500 b
 
 ### 1. Setup
 ```bash
-git clone https://github.com/ervikaskr/amazon-books-qa-finetune.git
-cd amazon-books-qa-finetune
+git clone https://github.com/ervikaskr/llm-finetuning-qlora.git
+cd llm-finetuning-qlora
 pip install -r requirements.txt
 ```
 
@@ -61,7 +61,7 @@ ollama run amazon-books "List bestseller books of Amazon"
 ## 📂 Project Structure
 
 ```
-amazon-books-qa-finetune/
+llm-finetuning-qlora/
 ├── README.md
 ├── requirements.txt
 ├── Modelfile                    # Ollama deployment config
