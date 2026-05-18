@@ -4,6 +4,6 @@ __pycache__/
 *.pyc
 .DS_Store
 .venv/
-data/train.jsonl
+data/train_raw.jsonl
 data/eval.jsonl
 wandb/

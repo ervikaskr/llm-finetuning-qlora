@@ -43,28 +43,45 @@ def parse_args():
 def prepare_mlx_data():
     """
     Convert our JSONL dataset to MLX's expected format.
-    MLX expects train.jsonl and valid.jsonl with a "text" field
-    containing the full formatted conversation.
+    
+    MLX expects:
+      - data/train.jsonl (required)
+      - data/valid.jsonl (optional, for validation loss)
+    
+    Format must be one of:
+      - "chat": {"messages": [{"role": "user", ...}, {"role": "assistant", ...}]}
+      - "completions": {"prompt": "...", "completion": "..."}
+      - "text": {"text": "..."}
+    
+    We use "chat" format since our data is already conversations.
     """
     data_dir = Path(__file__).parent.parent / "data"
-    train_path = data_dir / "train.jsonl"
-    mlx_train = data_dir / "mlx_train.jsonl"
-    mlx_valid = data_dir / "mlx_valid.jsonl"
+    source_path = data_dir / "train_raw.jsonl"
+    mlx_train = data_dir / "train.jsonl"
+    mlx_valid = data_dir / "valid.jsonl"
 
-    if not train_path.exists():
+    # Our prepare_data.py saves to train.jsonl, rename it first
+    original_train = data_dir / "train.jsonl"
+    if original_train.exists() and not source_path.exists():
+        original_train.rename(source_path)
+
+    if not source_path.exists():
         print("❌ Run first: python scripts/prepare_data.py")
         return None
 
-    # Convert conversations to plain text format for MLX
-    # Format: <user>question</user><assistant>answer</assistant>
+    # Convert to MLX "chat" format: {"messages": [...]}
     train_items = []
-    with open(train_path) as f:
+    with open(source_path) as f:
         for line in f:
             item = json.loads(line)
             convos = item["conversations"]
-            # Simple format MLX can train on
-            text = f"<|user|>\n{convos[0]['content']}\n<|assistant|>\n{convos[1]['content']}<|end|>"
-            train_items.append({"text": text})
+            # MLX chat format uses "messages" key with role/content
+            train_items.append({
+                "messages": [
+                    {"role": "user", "content": convos[0]["content"]},
+                    {"role": "assistant", "content": convos[1]["content"]},
+                ]
+            })
 
     # Split: 90% train, 10% validation
     split = int(len(train_items) * 0.9)
