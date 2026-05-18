@@ -1,0 +1,8 @@
+outputs/
+*.gguf
+__pycache__/
+*.pyc
+.DS_Store
+data/train.jsonl
+data/eval.jsonl
+wandb/
