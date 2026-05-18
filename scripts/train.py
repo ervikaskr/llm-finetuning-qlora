@@ -106,7 +106,7 @@ def main():
         "--data", str(data_dir),
         "--train",
         "--batch-size", str(args.batch_size),
-        "--lora-layers", str(args.lora_layers),
+        "--num-layers", str(args.lora_layers),
         "--iters", str(args.iters),
         "--learning-rate", str(args.lr),
         "--adapter-path", args.output_dir,
