@@ -31,6 +31,8 @@ Fine-tune Gemma 4 (or any open LLM) to answer questions about Amazon's top 500 b
 ```bash
 git clone https://github.com/ervikaskr/llm-finetuning-qlora.git
 cd llm-finetuning-qlora
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -112,7 +114,8 @@ llm-finetuning-qlora/
 ## 🔄 Reproduce
 
 ```bash
-# Full pipeline (5 commands)
+# Full pipeline (6 commands)
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python scripts/download_data.py
 python scripts/prepare_data.py

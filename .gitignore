@@ -3,6 +3,7 @@ outputs/
 __pycache__/
 *.pyc
 .DS_Store
+.venv/
 data/train.jsonl
 data/eval.jsonl
 wandb/
