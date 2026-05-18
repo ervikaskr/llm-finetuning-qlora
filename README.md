@@ -88,12 +88,12 @@ llm-finetuning-qlora/
 
 | Component | Choice | Why |
 |-----------|--------|-----|
-| Base Model | Gemma 4 E4B (4B params) | Small, multimodal, Apache 2.0 |
-| Method | QLoRA (4-bit + LoRA r=16) | Fits on 10GB VRAM / 36GB Mac |
-| Framework | Unsloth + TRL | 2x faster, 60% less memory |
+| Base Model | Gemma 2 2B (4-bit MLX) | Small, fast, fits any Mac |
+| Method | LoRA via MLX | Native Apple Silicon, fastest on Mac |
+| Framework | Apple MLX (mlx-lm) | No CUDA needed, uses unified memory |
 | Dataset | 500 books → 1050 Q&A pairs | Diverse question types |
-| Export | GGUF Q4_K_M | For Ollama local deployment |
-| Training Time | ~15 min (Mac M3) / ~8 min (T4) | 100 steps |
+| Export | GGUF via mlx_lm.convert | For Ollama local deployment |
+| Training Time | ~10-15 min (M3 Pro) | 100 iterations |
 
 ## 📊 Results
 
@@ -114,13 +114,13 @@ llm-finetuning-qlora/
 ## 🔄 Reproduce
 
 ```bash
-# Full pipeline (6 commands)
+# Full pipeline
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python scripts/download_data.py
 python scripts/prepare_data.py
-python scripts/train.py --max_steps 100
-python scripts/evaluate.py --query "List bestseller books of Amazon"
+python scripts/train.py --iters 100
+python scripts/evaluate.py --compare --query "List bestseller books of Amazon"
 ```
 
 ## 📝 License
